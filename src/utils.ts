@@ -1,5 +1,3 @@
-import os from 'os';
-import { isMainThread, threadId } from 'worker_threads';
 import type {
   SdkInfo,
   SdkMetadata,
@@ -14,17 +12,8 @@ import type {
 import { createEnvelope, dropUndefinedKeys, dsnToString, uuid4 } from '@sentry/utils';
 import type { ThreadCpuProfile, RawThreadCpuProfile } from './cpu_profiler';
 
-const THREAD_ID_STRING = String(threadId);
-const THREAD_NAME = isMainThread ? 'main' : 'worker';
-
-// Machine properties (eval only once)
-const PLATFORM = os.platform();
-const RELEASE = os.release();
-const VERSION = os.version();
-const TYPE = os.type();
-const MODEL = os.machine ? os.machine() : os.arch();
-const ARCH = os.arch();
-
+const THREAD_ID_STRING = '@TODO';
+const THREAD_NAME = '@TODO';
 export interface Profile {
   event_id: string;
   version: string;
@@ -182,18 +171,18 @@ export function createProfilingEventEnvelope(
       version: process.versions.node
     },
     os: {
-      name: PLATFORM,
-      version: RELEASE,
-      build_number: VERSION
+      name: '@TODO',
+      version: '@TODO',
+      build_number: '@TODO'
     },
     device: {
       locale:
         (process.env['LC_ALL'] || process.env['LC_MESSAGES'] || process.env['LANG'] || process.env['LANGUAGE']) ??
         'unknown locale',
       // os.machine is new in node18
-      model: MODEL,
-      manufacturer: TYPE,
-      architecture: ARCH,
+      model: '@TODO',
+      manufacturer: '@TODO',
+      architecture: '@TODO',
       is_emulator: false
     },
     profile: enrichedThreadProfile,

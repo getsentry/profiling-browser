@@ -7,11 +7,11 @@ body:
       label: Is there an existing issue for this?
       description: Please search to see if an issue already exists for the bug you encountered.
       options:
-        - label: I have checked for existing issues https://github.com/getsentry/profiling-node/issues
+        - label: I have checked for existing issues https://github.com/getsentry/profiling-browser/issues
           required: true
         - label: I have reviewed the documentation https://docs.sentry.io/
           required: true
-        - label: I am using the latest SDK release https://github.com/getsentry/profiling-node/releases
+        - label: I am using the latest SDK release https://github.com/getsentry/profiling-browser/releases
           required: true
   - type: dropdown
     id: type
@@ -36,13 +36,6 @@ body:
       label: Link to Sentry event
       description: If applicable, provide a link to the affected event from your Sentry account. The event will only be viewable by Sentry staff.
       placeholder: https://sentry.io/organizations/<org-slug>/issues/<issue-id>/events/<event-id>/?project=<project-id>    
-  - type: textarea
-    id: env
-    attributes:
-      label: What environment is your node script running in?
-      description: Serverless functions, scripts, running your own server (express) etc... Are you using any specific frameworks like remix, next etc?
-    validations:
-      required: true
   - type: textarea
     id: deploy
     attributes:

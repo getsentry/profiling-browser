@@ -3,7 +3,6 @@ import { getMainCarrier } from '@sentry/hub';
 import { logger, uuid4 } from '@sentry/utils';
 
 import { isDebugBuild } from './env';
-import { CpuProfilerBindings } from './cpu_profiler';
 
 const MAX_PROFILE_DURATION_MS = 30 * 1000;
 
@@ -98,7 +97,7 @@ export function __PRIVATE__wrapStartTransactionWithProfiling(startTransaction: S
     }
 
     // Enqueue a timeout to prevent profiles from running over max duration.
-    let maxDurationTimeoutID: NodeJS.Timeout | void = global.setTimeout(() => {
+    let maxDurationTimeoutID: ReturnType<Window['setTimeout']> | void = window.setTimeout(() => {
       if (isDebugBuild()) {
         logger.log('[Profiling] max profile duration elapsed, stopping profiling for:', transactionContext.name);
       }
@@ -109,10 +108,6 @@ export function __PRIVATE__wrapStartTransactionWithProfiling(startTransaction: S
       // onProfileHandler should always return the same profile even if this is called multiple times.
       // Always call onProfileHandler to ensure stopProfiling is called and the timeout is cleared.
       const profile = onProfileHandler();
-      // If we receive a profile, set the logging mode that was used as a tag
-      if (profile) {
-        transaction.setTag('profiler_logging_mode', profile.profiler_logging_mode);
-      }
       // @ts-expect-error profile is not a part of sdk metadata so we expect error until it becomes part of the official SDK.
       transaction.setMetadata({ profile });
       return originalFinish();
@@ -140,7 +135,7 @@ function _addProfilingExtensionMethods(): void {
   if (!carrier.__SENTRY__.extensions['startTransaction']) {
     if (isDebugBuild()) {
       logger.log(
-        '[Profiling] startTransaction does not exists, profiling will not work. Make sure you import @sentry/tracing package before @sentry/profiling-node as import order matters.'
+        '[Profiling] startTransaction does not exists, profiling will not work. Make sure you import @sentry/tracing package before @sentry/profiling-browser as import order matters.'
       );
     }
     return;
